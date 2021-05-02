@@ -1,0 +1,57 @@
+#include <iostream> // cout, cin vs.
+#include <algorithm> // sort (sıralama algoritması) vs.
+#include <vector> // vector 
+
+/* 
+	#define directive (yönergesi) ile 
+	obj dosyası oluşturulmadan  (Derleme zamanından ) önce
+	tanımlayıcının bulunduğu yerlere ilgili değerleri yazan bir 
+	makro oluşturuyoruz.
+*/
+#define LENGTH 10
+
+std::vector<int> addRandomNumber() {
+	std::srand(5323); // ilk tohum 
+	// Kullandığınız derleyicide hata verme olasılığına karşılık 
+	// bir kez rand fonksiyonunu çağırıyoruz.
+	std::rand(); 
+	std::vector<int> temp_vec;
+	for (int count{ 0 }; count < LENGTH; ++count)
+		temp_vec.push_back(std::rand());
+
+	return temp_vec;
+}
+
+/*
+	Dizi elemanlarını tekrar kopyalamaması için 
+	& işaretini kullanıp sadece referansını kopyalıyoruz.
+	fonksiyon çağrıldığında ilgili refaranstaki değerleri kullanıcak
+*/
+void print(std::vector<int>& value) {
+	/* 
+	 const anahtar kelimesini eleman üzerinde değişiklik yapmamak için kullanıyoruz
+	 Benzer kullanım  : int const&
+	 -------- ekstra not --------- 
+	 & ya da * işaretinden sonra da const kullanırsak olur ancak
+	 başka bir anlamı vardır,
+	 işaretçi sabit olduğu için sonradan referansını değiştiremezsiniz.
+	 */
+	for (const int& elm : value)
+		std::cout << elm << std::endl;
+}
+
+int main()
+{
+	// Varsayılan şablon kütüphanesinde sunulan dinamik dizi sınıfıdır
+	std::vector<int> vec(addRandomNumber()); // move constructor
+	
+	// linear(çizgisel) arama yapmamak için dizimizi sıralıyoruz
+	// Default(varsayılan) olarak küçükten büyüğe sıralama yapar
+	std::sort(vec.begin(), vec.end());
+	
+	// verilerimizi gösteren fonksiyon
+	print(vec);
+	std::cout << std::endl;
+	// vec.back() dizideki son elamanı getirir
+	std::cout <<  "Dizideki en buyuk eleman :" << vec.back();
+}
